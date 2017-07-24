@@ -7,7 +7,8 @@ import vim
 
 def split_words(line):
     # TODO: make me understand CamelCase and snake_case
-    return [(m.group(0), (m.start(), m.end()-1))
+    # re column index start with 0, vim index start with 1
+    return [(m.group(0), (m.start()+1, m.end()))
             for m in re.finditer(r'\S+', line)]
 
 # DEPRECATED! See benchmark results
@@ -55,6 +56,7 @@ def find_spell_errors(words):
 # TODO: Process all lines at once, add the line no to the words list
 for line_no, line in enumerate(vim.current.buffer):
     words = split_words(line)
+    # print(words)
     for word, col_idx in find_spell_errors(words):
         # TODO: extract this matchadd command as a function
         # print("{word}, {col}".format(word=word, col=col_idx))
@@ -62,7 +64,7 @@ for line_no, line in enumerate(vim.current.buffer):
             # "match Error /\%{line_no}l\%>{col_start}c\%<{col_end}c./".format(
             "call matchadd('Error', '\%{line_no}l\%>{col_start}c\%<{col_end}c.')".format(
                 line_no=line_no+1,  # vim line start with 1
-                col_start=(col_idx[0]),  # col start with 1 == \%>0c
-                col_end=(col_idx[1]+2)  # col ends with N == \%<(N+1)c
+                col_start=(col_idx[0]-1),  # col start with 1 == \%>0c
+                col_end=(col_idx[1]+1)  # col ends with N == \%<(N+1)c
             )
         )
