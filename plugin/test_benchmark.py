@@ -40,6 +40,25 @@ def test_all_words_list(benchmark):
         output = stdout.decode()
         result_code = output.split("\n")[1][0]
 
+def test_all_words_list_by_chunk(benchmark):
+    @benchmark
+    def check_paragraph():
+        # codespell.spell_is_wrong(word)
+        base_aspell_cmd = ['aspell', '-a', '--list']
+        extra_apsell_args = ["-l", "en-US"]
+
+        cmd = base_aspell_cmd + extra_apsell_args
+
+        words = text.split()
+        for i in range(0, len(words)//100 +1):
+            this_chunk = " ".join(words[i*100:((i+1)*100)])
+
+            p = Popen(cmd,
+                    stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+            stdout = p.communicate(input=str.encode(this_chunk))[0]
+            output = stdout.decode()
+            result_code = output.split("\n")[1][0]
+
 def test_all_words_list_sort(benchmark):
     @benchmark
     def check_paragraph():
