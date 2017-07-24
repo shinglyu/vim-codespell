@@ -1,6 +1,10 @@
 # Commands
 * `:Codespell`
 
+# Testing
+* `sudo pip3 install pytest pytest-benchmark` (Or use `virtualenv`)
+* `py.test`
+
 # Tips
 * Check if `python3` is supported in your vim build: `vim --version`, look for the string "+python3".
 * Load the `*.vim` script from commandline:

@@ -1,0 +1,11 @@
+* Every word send to aspell
+```
+----------------------------------------------------- benchmark: 1 tests -----------------------------------------------------
+Name (time in ms)                  Min       Max      Mean  StdDev    Median      IQR  Outliers(*)     OPS  Rounds  Iterations
+------------------------------------------------------------------------------------------------------------------------------
+test_spell_is_wrong_speed     656.8359  681.7564  665.2494  9.7494  662.1309  10.3155          1;0  1.5032       5           1
+------------------------------------------------------------------------------------------------------------------------------
+
+(*) Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+OPS: Operations Per Second, computed as 1 / Mean
+```
