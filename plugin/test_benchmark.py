@@ -22,8 +22,7 @@ def test_every_word_speed(benchmark):
             p = Popen(cmd,
                     stdout=PIPE, stdin=PIPE, stderr=STDOUT)
             stdout = p.communicate(input=str.encode(word))[0]
-            output = stdout.decode()
-            result_code = output.split("\n")[1][0]
+            stdout.decode()
 
 def test_all_words_list(benchmark):
     @benchmark
@@ -37,8 +36,7 @@ def test_all_words_list(benchmark):
         p = Popen(cmd,
                 stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         stdout = p.communicate(input=str.encode(text))[0]
-        output = stdout.decode()
-        result_code = output.split("\n")[1][0]
+        stdout.decode()
 
 def test_all_words_list_by_chunk(benchmark):
     @benchmark
@@ -91,6 +89,43 @@ def test_all_words_list_sort_unique(benchmark):
         p = Popen(cmd,
                 stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         stdout = p.communicate(input=str.encode(" ".join(words)))[0]
-        output = stdout.decode()
-        result_code = output.split("\n")[1][0]
+        stdout.decode()
 
+def test_real_code_sort(benchmark):
+    with open("codespell.py", "r") as f:
+        code = f.read()
+    code = code * 100
+    @benchmark
+    def check_paragraph():
+        # codespell.spell_is_wrong(word)
+        seen = set()
+        words = [x for x in code.split() if not (x in seen or seen.add(x))]
+
+        base_aspell_cmd = ['aspell', '--list']
+        extra_apsell_args = ["-l", "en-US"]
+
+        cmd = base_aspell_cmd + extra_apsell_args
+
+        p = Popen(cmd,
+                stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        stdout = p.communicate(input=str.encode(" ".join(words)))[0]
+        stdout.decode()
+
+def test_real_code_no_sort(benchmark):
+    with open("codespell.py", "r") as f:
+        code = f.read()
+    code = code * 100
+    @benchmark
+    def check_paragraph():
+        # codespell.spell_is_wrong(word)
+        words = code.split()
+
+        base_aspell_cmd = ['aspell', '--list']
+        extra_apsell_args = ["-l", "en-US"]
+
+        cmd = base_aspell_cmd + extra_apsell_args
+
+        p = Popen(cmd,
+                stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        stdout = p.communicate(input=str.encode(" ".join(words)))[0]
+        stdout.decode()
