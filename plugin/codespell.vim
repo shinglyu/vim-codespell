@@ -3,6 +3,7 @@ if !has('python3')
 endif
 
 function! CodeSpell()
+  call clearmatches()
   py3file codespell.py
 endfunction
 
