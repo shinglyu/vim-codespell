@@ -9,3 +9,30 @@ test_spell_is_wrong_speed     656.8359  681.7564  665.2494  9.7494  662.1309  10
 (*) Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
 OPS: Operations Per Second, computed as 1 / Mean
 ```
+
+```
+% py.test                                                                                                                                                               ✹ ✭
+=========================================================================== test session starts ============================================================================
+platform linux -- Python 3.5.2, pytest-2.9.2, py-1.4.31, pluggy-0.3.1
+benchmark: 3.1.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /home/shinglyu/workspace/CodeSpell.vim, inifile:
+plugins: benchmark-3.1.0
+collected 5 items
+
+plugin/test_benchmark.py ....
+plugin/test_codespell.py .
+
+
+--------------------------------------------------------------------------------------------- benchmark: 4 tests --------------------------------------------------------------------------------------------
+Name (time in ms)                        Min                 Max                Mean             StdDev              Median                IQR            Outliers(*)       OPS            Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_all_words_list                   4.6134 (1.0)        5.6113 (1.01)       4.9318 (1.0)       0.1328 (1.13)       4.9310 (1.0)       0.1604 (1.15)            56;3  202.7670 (1.0)         214           1
+test_all_words_list_sort_unique       4.6625 (1.01)       5.5593 (1.0)        4.9783 (1.01)      0.1171 (1.0)        4.9705 (1.01)      0.1391 (1.0)             45;6  200.8722 (0.99)        200           1
+test_all_words_list_sort              4.7002 (1.02)       7.7052 (1.39)       5.0267 (1.02)      0.2283 (1.95)       5.0139 (1.02)      0.1794 (1.29)            10;1  198.9376 (0.98)        188           1
+test_every_word_speed               650.2723 (140.95)   683.4507 (122.94)   664.5718 (134.75)   14.4274 (123.20)   657.5787 (133.35)   24.0231 (172.76)           1;0    1.5047 (0.01)          5           1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(*) Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+OPS: Operations Per Second, computed as 1 / Mean
+========================================================================= 5 passed in 8.75 seconds =========================================================================
+```
