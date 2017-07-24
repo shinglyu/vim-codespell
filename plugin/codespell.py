@@ -8,13 +8,13 @@ import vim
 def split_words(line):
     # TODO: make me understand CamelCase and snake_case
     # re column index start with 0, vim index start with 1
-    return [(m.group(0), (m.start()+1, m.end()))
-            for m in re.finditer(r'[^_^\s]+', line)] #^_: not underscore, ^\s: not whitespace
+    return [m.group(0) for m in re.finditer(r"[^_^\s]+", line)] #^_: not underscore, ^\s: not whitespace
+
 
 # DEPRECATED! See benchmark results
 def spell_is_wrong(word):
     # TODO: call aspell or other utility
-    base_aspell_cmd = ['aspell', '-a']
+    base_aspell_cmd = ["aspell", "-a"]
     extra_apsell_args = ["-l", "en-US"]
 
     cmd = base_aspell_cmd + extra_apsell_args
@@ -31,8 +31,9 @@ def spell_is_wrong(word):
     else:
         return True
 
+
 def find_spell_errors(words):
-    base_aspell_cmd = ['aspell', '-a', '--list']
+    base_aspell_cmd = ["aspell", "--list"]
     extra_apsell_args = ["-l", "en-US"]
 
     cmd = base_aspell_cmd + extra_apsell_args
@@ -40,31 +41,18 @@ def find_spell_errors(words):
     p = Popen(cmd,
               stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 
-    word_texts = [x[0] for x in words]
-
-    stdout = p.communicate(input=str.encode(" ".join(word_texts)))[0]
+    stdout = p.communicate(input=str.encode(" ".join(words)))[0]
     output = stdout.decode()
-    result_codes = [line[0] for line in output.rstrip().split("\n")[1:]] # The first line is a aspell version message
-    errors = []
-    for code, word in zip(result_codes, words):
-        if code == "&":
-            errors.append(word)
-    return errors
+    return output.rstrip().split("\n")
 
 
 # Main
-# TODO: Process all lines at once, add the line no to the words list
-for line_no, line in enumerate(vim.current.buffer):
-    words = split_words(line)
-    # print(words)
-    for word, col_idx in find_spell_errors(words):
-        # TODO: extract this matchadd command as a function
-        # print("{word}, {col}".format(word=word, col=col_idx))
-        vim.command(
-            # "match Error /\%{line_no}l\%>{col_start}c\%<{col_end}c./".format(
-            "call matchadd('Error', '\%{line_no}l\%>{col_start}c\%<{col_end}c.')".format(
-                line_no=line_no+1,  # vim line start with 1
-                col_start=(col_idx[0]-1),  # col start with 1 == \%>0c
-                col_end=(col_idx[1]+1)  # col ends with N == \%<(N+1)c
-            )
+lines = " ".join(vim.current.buffer)
+words = split_words(lines)
+for word in find_spell_errors(words):
+    # TODO: extract this matchadd command as a function
+    vim.command(
+        "call matchadd(\"Error\", \"{word}\")".format(
+            word=re.escape(word)
         )
+    )
