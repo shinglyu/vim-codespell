@@ -8,7 +8,7 @@ import vim
 def split_words(line):
     # TODO: make me understand CamelCase and snake_case
     # re column index start with 0, vim index start with 1
-    return [m.group(0) for m in re.finditer(r"[^_^\s]+", line)] #^_: not underscore, ^\s: not whitespace
+    return [m.group(0) for m in re.finditer(r"[^_^\s^\.^=]+", line)] #^_: not underscore, ^\s: not whitespace
 
 
 # DEPRECATED! See benchmark results
@@ -49,7 +49,8 @@ def find_spell_errors(words):
 # Main
 lines = " ".join(vim.current.buffer)
 words = split_words(lines)
-for word in find_spell_errors(words):
+unique_words = list(set(words))
+for word in find_spell_errors(unique_words):
     # TODO: extract this matchadd command as a function
     vim.command(
         "call matchadd(\"Error\", \"{word}\")".format(
