@@ -9,7 +9,7 @@ def split_words(line):
     # TODO: make me understand CamelCase and snake_case
     # re column index start with 0, vim index start with 1
     return [(m.group(0), (m.start()+1, m.end()))
-            for m in re.finditer(r'\S+', line)]
+            for m in re.finditer(r'[^_^\s]+', line)] #^_: not underscore, ^\s: not whitespace
 
 # DEPRECATED! See benchmark results
 def spell_is_wrong(word):
