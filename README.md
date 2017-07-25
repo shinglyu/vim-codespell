@@ -1,3 +1,6 @@
+# Loading
+* To load it temporarily for test, `cd` to `plugin/`, run `vim -S codespell.vim`.
+
 # Commands
 * `:Codespell`: Run the spell checker once
 
