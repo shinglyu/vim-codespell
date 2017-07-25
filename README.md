@@ -5,6 +5,23 @@
 * `sudo pip3 install pytest pytest-benchmark` (Or use `virtualenv`)
 * `py.test`
 
+# Generating Dictionaries
+* Create a text file (`cs.list`) of words, one word per line
+
+* Generate the dictionary
+```
+aspell --lang=en create master ./cs.dict < cs.list
+```
+
+A dictionary file `cs.dict` will be generated in the current dir.
+
+* Use the dictionary:
+```
+cat file_to_be_checked.txt | aspell -l en -d cs.dict --dict-dir=./ --list
+```
+
+The `--dict-dir` must be specified otherwise `aspell` will check the default location.
+
 # Tips
 * Check if `python3` is supported in your vim build: `vim --version`, look for the string "+python3".
 * Load the `*.vim` script from commandline:
