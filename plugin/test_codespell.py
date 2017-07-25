@@ -22,9 +22,9 @@ def test_find_spell_errors():
     assert ["Helro", "wordd"] == codespell.find_spell_errors(words)
 
 
-def test_split_word_plain():
-    assert ["Hello", "World"] == codespell.split_words("Hello World")
+def test_tokenize_plain():
+    assert ["Hello", "World"] == codespell.tokenize("Hello World")
 
 
-def test_split_word_underscore():
-    assert ["Hello", "World"] == codespell.split_words("Hello_World")
+def test_tokenize_underscore():
+    assert ["Hello", "World"] == codespell.tokenize("Hello_World")
