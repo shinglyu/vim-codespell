@@ -21,6 +21,14 @@ def test_find_spell_errors():
 
     assert ["Helro", "wordd"] == codespell.find_spell_errors(words)
 
+def test_find_spell_errors_cs():
+    words = [
+        "http",
+        "hello",
+    ]
+
+    assert ["hello"] == codespell.find_spell_errors_cs(words)
+
 
 def test_tokenize_plain():
     assert ["Hello", "World"] == codespell.tokenize("Hello World")

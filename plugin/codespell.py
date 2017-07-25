@@ -31,12 +31,15 @@ def spell_is_wrong(word):
     else:
         return True
 
+def find_spell_errors_cs(words):
+    # Must be executed from the top level
+    return find_spell_errors(words, ["-d", "cs.dict", "--dict-dir=./dict"])
 
-def find_spell_errors(words):
+def find_spell_errors(words, extra_args=[]):
     base_aspell_cmd = ["aspell", "--list"]
     extra_apsell_args = ["-l", "en-US"]
 
-    cmd = base_aspell_cmd + extra_apsell_args
+    cmd = base_aspell_cmd + extra_apsell_args + extra_args
 
     p = Popen(cmd,
               stdout=PIPE, stdin=PIPE, stderr=STDOUT)
@@ -50,7 +53,7 @@ def find_spell_errors(words):
 lines = " ".join(vim.current.buffer)
 words = tokenize(lines)
 unique_words = list(set(words))
-for word in find_spell_errors(unique_words):
+for word in find_spell_errors(find_spell_errors_cs(unique_words)):
     # TODO: extract this matchadd command as a function
     vim.command(
         "call matchadd(\"Error\", \"{word}\")".format(
