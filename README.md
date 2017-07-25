@@ -1,5 +1,10 @@
 # Commands
-* `:Codespell`
+* `:Codespell`: Run the spell checker once
+
+* To run it everytime you save a `*.py` file, add the following to your vimrc:
+```
+:autocmd BufWritePre *.py :Codespell
+```
 
 # Testing
 * `sudo pip3 install pytest pytest-benchmark` (Or use `virtualenv`)
