@@ -38,12 +38,21 @@ def test_tokenize_plain():
 def test_tokenize_underscore():
     assert ["Hello", "World"] == codespell.tokenize("Hello_World")
 
+
 def test_tokenize_brackets():
     assert ["Hello", "World"] == codespell.tokenize("Hello(World)")
     assert ["Hello", "World"] == codespell.tokenize("Hello[World]")
     assert ["Hello", "World"] == codespell.tokenize("Hello{World}")
 
+
 def test_tokenize_quotes():
     assert ["Hello", "World"] == codespell.tokenize("Hello\"World\"")
     assert ["Hello", "World"] == codespell.tokenize("Hello\'World\'")
     assert ["Hello", "World"] == codespell.tokenize("Hello \'World\'")
+
+
+def test_tokenize_camel_case():
+    assert ["camel", "Case"] == codespell.tokenize("camelCase")
+    assert ["Title", "Case"] == codespell.tokenize("TitleCase")
+    assert ["Title", "Case", "mixed"] == codespell.tokenize("TitleCase mixed")
+

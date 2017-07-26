@@ -8,7 +8,15 @@ import vim
 def tokenize(line):
     # TODO: make me understand CamelCase and snake_case
     # re column index start with 0, vim index start with 1
-    return [m.group(0) for m in re.finditer(r"[^_^\s^\.^=^(^)^\{^\}^\[^\]^\"^\']+", line)] #^_: not underscore, ^\s: not whitespace
+    words = [m.group(0) for m in re.finditer(r"[^_^\s^\.^=^(^)^\{^\}^\[^\]^\"^\']+", line)] #^_: not underscore, ^\s: not whitespace
+    # TODO: maybe merge the two regex or make this more efficient
+    final_words = []
+    for word in words:
+        # Ref: https://stackoverflow.com/questions/29916065/how-to-do-camelcase-split-in-python
+        final_words += [m.group(0) for m in re.finditer(".+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)", word)]
+
+
+    return final_words
 
 
 # DEPRECATED! See benchmark results
