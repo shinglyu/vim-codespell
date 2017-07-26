@@ -64,7 +64,9 @@ unique_words = list(set(words))
 for word in find_spell_errors(find_spell_errors_cs(unique_words)):
     # TODO: extract this matchadd command as a function
     vim.command(
-        "call matchadd(\"Error\", \"{word}\")".format(
+        # We ignore words that has more lowercase char after it, becase we
+        # might be matching a prefix.
+        "call matchadd(\'Error\', \'\\v{word}\ze[^a-z]\')".format(
             word=re.escape(word)
         )
     )
