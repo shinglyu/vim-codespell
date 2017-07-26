@@ -56,3 +56,5 @@ def test_tokenize_camel_case():
     assert ["Title", "Case"] == codespell.tokenize("TitleCase")
     assert ["Title", "Case", "mixed"] == codespell.tokenize("TitleCase mixed")
 
+def test_filter_multi_occurance():
+    assert ["Hello"] == codespell.filter_multi_occurance(["Hello"] + ["World"] * 5)

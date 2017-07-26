@@ -1,5 +1,6 @@
 # TODO: correct header
 # Python 3
+from collections import defaultdict
 import re
 from subprocess import Popen, PIPE, STDOUT
 import vim
@@ -15,9 +16,23 @@ def tokenize(line):
         # Ref: https://stackoverflow.com/questions/29916065/how-to-do-camelcase-split-in-python
         final_words += [m.group(0) for m in re.finditer(".+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)", word)]
 
-
     return final_words
 
+
+def filter_multi_occurance(words):
+    counts = defaultdict(lambda: 0)
+    for word in words:
+        counts[word] += 1
+    filtered = []
+    # print(counts)
+    for word, count in counts.items():
+        # TODO: make this configurable
+        if count < 5:
+            filtered.append(word)
+        # if word == "tos":
+        #    print("TOS: " + str(count))
+        #    print(filtered)
+    return filtered
 
 # DEPRECATED! See benchmark results
 def spell_is_wrong(word):
@@ -60,6 +75,7 @@ def find_spell_errors(words, extra_args=[]):
 # Main
 lines = " ".join(vim.current.buffer)
 words = tokenize(lines)
+words = filter_multi_occurance(words)
 unique_words = list(set(words))
 for word in find_spell_errors(find_spell_errors_cs(unique_words)):
     # TODO: extract this matchadd command as a function
