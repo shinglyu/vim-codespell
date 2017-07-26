@@ -1,1 +1,2 @@
 * Python modules: https://docs.python.org/3/py-modindex.html => pymodules.list
+* Rust keywords: https://doc.rust-lang.org/grammar.html#keywords => rust.list
