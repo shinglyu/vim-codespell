@@ -7,9 +7,7 @@ import vim
 
 
 def tokenize(line):
-    # TODO: make me understand CamelCase and snake_case
-    # re column index start with 0, vim index start with 1
-    words = [m.group(0) for m in re.finditer(r"[^_^\s^\.^=^(^)^\{^\}^\[^\]^\"^\']+", line)] #^_: not underscore, ^\s: not whitespace
+    words = [m.group(0) for m in re.finditer(r"[a-zA-Z]+", line)]
     # TODO: maybe merge the two regex or make this more efficient
     final_words = []
     for word in words:
@@ -24,35 +22,12 @@ def filter_multi_occurance(words):
     for word in words:
         counts[word] += 1
     filtered = []
-    # print(counts)
     for word, count in counts.items():
         # TODO: make this configurable
         if count < 5:
             filtered.append(word)
-        # if word == "tos":
-        #    print("TOS: " + str(count))
-        #    print(filtered)
     return filtered
 
-# DEPRECATED! See benchmark results
-def spell_is_wrong(word):
-    # TODO: call aspell or other utility
-    base_aspell_cmd = ["aspell", "-a"]
-    extra_apsell_args = ["-l", "en-US"]
-
-    cmd = base_aspell_cmd + extra_apsell_args
-
-    p = Popen(cmd,
-              stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-    stdout = p.communicate(input=str.encode(word))[0]
-    output = stdout.decode()
-    result_code = output.split("\n")[1][0]
-    if result_code == "&":
-        return True
-    elif result_code == "*":
-        return False
-    else:
-        return True
 
 def find_spell_errors_cs(words):
     # Must be executed from the top level
