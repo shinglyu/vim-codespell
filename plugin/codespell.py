@@ -31,7 +31,8 @@ def filter_multi_occurance(words):
 
 def find_spell_errors_cs(words):
     # Must be executed from the top level
-    return find_spell_errors(words, ["-d", "cs.dict", "--dict-dir=./dict"])
+    script_dir = vim.eval("s:dir")
+    return find_spell_errors(words, ["-d", "cs.dict", "--dict-dir={dir}/../dict".format(dir=script_dir)])
 
 def find_spell_errors(words, extra_args=[]):
     base_aspell_cmd = ["aspell", "--list"]

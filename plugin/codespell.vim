@@ -2,7 +2,9 @@ if !has('python3')
   finish
 endif
 
-let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h') . '/codespell.py'
+" s:dir will be used in python
+let s:dir= fnamemodify(resolve(expand('<sfile>:p')), ':h')
+let s:path = s:dir . '/codespell.py'
 
 function! CodeSpell()
   call clearmatches()
