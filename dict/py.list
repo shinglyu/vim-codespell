@@ -32,3 +32,6 @@ yield
 
 rstrip
 Popen
+urllib
+stdlib
+
