@@ -54,11 +54,26 @@ words = tokenize(lines)
 words = filter_multi_occurance(words)
 unique_words = list(set(words))
 for word in find_spell_errors(find_spell_errors_cs(unique_words)):
-    # TODO: extract this matchadd command as a function
-    vim.command(
-        # We ignore words that has more lowercase char after it, becase we
-        # might be matching a prefix.
-        "call matchadd(\'Error\', \'\\v{word}\ze[^a-z]\')".format(
-            word=re.escape(word)
+    # silently skip empty string, which is usually due to the dictionary not
+    # working correctly
+    if len(word) == 0:
+        continue
+    # We ignore words that has more lowercase char after it, because we
+    # might be matching a prefix.
+    if word[0].isupper():
+        # If the word starts with a upper case, it might be part of a CamelCase
+        # word, so we need to allow characters before it.
+        # TODO: extract this matchadd command as a function
+        vim.command(
+            "call matchadd(\'Error\', \'\\v{word}\ze[^a-z]\')".format(
+                word=re.escape(word)
+            )
         )
-    )
+    else:
+        # If the word starts with a lower case, we don't allow any lowercase
+        # charater before it, becuase the match may be a suffix
+        vim.command(
+            "call matchadd(\'Error\', \'\\v[^a-z]\zs{word}\ze[^a-z]\')".format(
+                word=re.escape(word)
+            )
+        )
